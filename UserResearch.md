@@ -30,3 +30,6 @@ Our users tend to have good income levels and solid credit scores, which play a 
 
 User demographic data indicates that 75% of users have above-median income and 80% report a credit score of 700 or higher, leading them to prefer higher-end rental properties that match their financial status.
 
+## Team Action (if any):
+Ensure the app offers filters and recommendations for premium rental properties tailored to users with higher income and good credit scores, including features like affordability calculators and payment plan options for those seeking high-quality living spaces.
+
