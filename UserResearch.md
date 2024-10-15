@@ -20,3 +20,13 @@ Our users are primarily pet owners, consider pet-friendly housing to be preferab
 ## Team Action (if any):
 + Prioritize features in the app that cater to users with pets, such as a "Pet-Friendly" filter, pet deposit/fees details, nearby pet services, and parks.
 
+Observation 3:
+
+Observation Statement:
+
+Our users tend to have good income levels and solid credit scores, which play a crucial role in their rental decisions.
+
+Supporting Data:
+
+User demographic data from financial surveys and profile information shows that 75% of users have an income above the median range for their area, and 80% report a credit score of 700 or higher. These users are typically approved for higher-end rental properties and prefer options that match their financial status.
+
