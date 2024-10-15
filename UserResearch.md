@@ -22,11 +22,11 @@ Our users are primarily pet owners, consider pet-friendly housing to be preferab
 
 # Observation 3: 
 
-Observation Statement:
+#Observation Statement:
 
 Our users tend to have good income levels and solid credit scores, which play a crucial role in their rental decisions.
 
-Supporting Data:
+#Supporting Data:
 
 User demographic data indicates that 75% of users have above-median income and 80% report a credit score of 700 or higher, leading them to prefer higher-end rental properties that match their financial status.
 
