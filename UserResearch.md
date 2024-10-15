@@ -9,3 +9,14 @@ Our users are primarily 18-24 years old and are typically moving in with friends
 ## Team Action (if any):
 + Ensure the app’s user interface and recommendations cater to younger audiences, emphasizing features that help groups or couples find suitable living spaces, such as shared accommodation filters or co-living affordability comparisons.
 
+# Observation 2: 
+
+## Observvation Statement:
+Our users are primarily pet owners, consider pet-friendly housing to be preferable.
+
+##Supporting Data:
++ User demographic data from surveys and user profiles indicate that 80% of users have pets, with 80% of them stating that pet-friendly housing is a key decision factor when choosing a place to live.
+
+## Team Action (if any):
++ Prioritize features in the app that cater to users with pets, such as a "Pet-Friendly" filter, pet deposit/fees details, nearby pet services, and parks.
+
