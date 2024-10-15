@@ -20,7 +20,7 @@ Our users are primarily pet owners, consider pet-friendly housing to be preferab
 ## Team Action (if any):
 + Prioritize features in the app that cater to users with pets, such as a "Pet-Friendly" filter, pet deposit/fees details, nearby pet services, and parks.
 
-Observation 3:
+# Observation 3: 
 
 Observation Statement:
 
