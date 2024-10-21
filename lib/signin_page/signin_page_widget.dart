@@ -8,19 +8,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'login_signup_model.dart';
-export 'login_signup_model.dart';
+import 'signin_page_model.dart';
+export 'signin_page_model.dart';
 
-class LoginSignupWidget extends StatefulWidget {
-  const LoginSignupWidget({super.key});
+class SigninPageWidget extends StatefulWidget {
+  const SigninPageWidget({super.key});
 
   @override
-  State<LoginSignupWidget> createState() => _LoginSignupWidgetState();
+  State<SigninPageWidget> createState() => _SigninPageWidgetState();
 }
 
-class _LoginSignupWidgetState extends State<LoginSignupWidget>
+class _SigninPageWidgetState extends State<SigninPageWidget>
     with TickerProviderStateMixin {
-  late LoginSignupModel _model;
+  late SigninPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -29,7 +29,7 @@ class _LoginSignupWidgetState extends State<LoginSignupWidget>
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => LoginSignupModel());
+    _model = createModel(context, () => SigninPageModel());
 
     _model.tabBarController = TabController(
       vsync: this,

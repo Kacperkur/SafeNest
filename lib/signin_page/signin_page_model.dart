@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'login_signup_widget.dart' show LoginSignupWidget;
+import 'signin_page_widget.dart' show SigninPageWidget;
 import 'package:flutter/material.dart';
 
-class LoginSignupModel extends FlutterFlowModel<LoginSignupWidget> {
+class SigninPageModel extends FlutterFlowModel<SigninPageWidget> {
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for TabBar widget.

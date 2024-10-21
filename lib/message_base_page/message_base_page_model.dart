@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'base_page_widget.dart' show BasePageWidget;
+import 'message_base_page_widget.dart' show MessageBasePageWidget;
 import 'package:flutter/material.dart';
 
-class BasePageModel extends FlutterFlowModel<BasePageWidget> {
+class MessageBasePageModel extends FlutterFlowModel<MessageBasePageWidget> {
   @override
   void initState(BuildContext context) {}
 

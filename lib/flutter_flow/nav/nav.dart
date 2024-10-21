@@ -72,19 +72,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const OnboardingWidget() : const LoginSignupWidget(),
+          appStateNotifier.loggedIn ? const OnboardingWidget() : const SigninPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) => appStateNotifier.loggedIn
               ? const OnboardingWidget()
-              : const LoginSignupWidget(),
+              : const SigninPageWidget(),
         ),
         FFRoute(
-          name: 'LoginSignup',
-          path: '/loginSignup',
-          builder: (context, params) => const LoginSignupWidget(),
+          name: 'signinPage',
+          path: '/signinPage',
+          builder: (context, params) => const SigninPageWidget(),
         ),
         FFRoute(
           name: 'onboarding',
@@ -92,14 +92,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const OnboardingWidget(),
         ),
         FFRoute(
-          name: 'profilePage',
-          path: '/profilePage',
-          builder: (context, params) => const ProfilePageWidget(),
+          name: 'profileBasePage',
+          path: '/profileBasePage',
+          builder: (context, params) => const ProfileBasePageWidget(),
         ),
         FFRoute(
-          name: 'basePage',
-          path: '/basePage',
-          builder: (context, params) => const BasePageWidget(),
+          name: 'listingBasePage',
+          path: '/listingBasePage',
+          builder: (context, params) => const ListingBasePageWidget(),
+        ),
+        FFRoute(
+          name: 'messageBasePage',
+          path: '/messageBasePage',
+          builder: (context, params) => const MessageBasePageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -270,7 +275,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/loginSignup';
+            return '/signinPage';
           }
           return null;
         },
