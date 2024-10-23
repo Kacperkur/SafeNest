@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
+import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -72,14 +73,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const OnboardingWidget() : const SigninPageWidget(),
+          appStateNotifier.loggedIn ? const NavBarPage() : const SigninPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.loggedIn
-              ? const OnboardingWidget()
-              : const SigninPageWidget(),
+          builder: (context, _) =>
+              appStateNotifier.loggedIn ? const NavBarPage() : const SigninPageWidget(),
         ),
         FFRoute(
           name: 'signinPage',
@@ -94,17 +94,28 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'profileBasePage',
           path: '/profileBasePage',
-          builder: (context, params) => const ProfileBasePageWidget(),
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'profileBasePage')
+              : const ProfileBasePageWidget(),
         ),
         FFRoute(
           name: 'listingBasePage',
           path: '/listingBasePage',
-          builder: (context, params) => const ListingBasePageWidget(),
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'listingBasePage')
+              : const ListingBasePageWidget(),
         ),
         FFRoute(
           name: 'messageBasePage',
           path: '/messageBasePage',
-          builder: (context, params) => const MessageBasePageWidget(),
+          builder: (context, params) => params.isEmpty
+              ? const NavBarPage(initialPage: 'messageBasePage')
+              : const MessageBasePageWidget(),
+        ),
+        FFRoute(
+          name: 'inMessagePage',
+          path: '/inMessagePage',
+          builder: (context, params) => const InMessagePageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

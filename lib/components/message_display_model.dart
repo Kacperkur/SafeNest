@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'listing_base_page_widget.dart' show ListingBasePageWidget;
+import 'message_display_widget.dart' show MessageDisplayWidget;
 import 'package:flutter/material.dart';
 
-class ListingBasePageModel extends FlutterFlowModel<ListingBasePageWidget> {
+class MessageDisplayModel extends FlutterFlowModel<MessageDisplayWidget> {
   @override
   void initState(BuildContext context) {}
 
