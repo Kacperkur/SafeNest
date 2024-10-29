@@ -6,6 +6,6 @@ a bottom sheet will be displayed with the same information. This will be done to
 information
 
 
-- Matthew Barbrack: Group A will be provided with a chip choice widget to allow for users to impliment their preferences for what kind of rental the user is looking for.  Will include all avalible preferences.  Group B will have an filter tab that will be near the address search bar tht will be a list of filters and properties that users can add to their search.
+- Matthew Barbrack: Group A will be provided with a chip choice widget to allow for users to impliment their preferences for what kind of rental the user is looking for.  Will include all avalible preferences.  Group B will have an filter tab that will be near the address search bar that will be a list of filters and properties that users can add to their search.
 The current preferences for both groups will include price range, minimum number of beds/baths, type of residence, house apartment etc, total square footage, etc...
 This will be uses the retention metric to see which users prefer to use in the app.
