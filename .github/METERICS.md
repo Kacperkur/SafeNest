@@ -9,4 +9,4 @@ on the number in the authentitcation database.
 
 
 # Message Interaction Rate (MIR)
-- Ivan Ortiz To assess user engagement, tracking response time—how quickly users reply to messages—can be insightful, as faster response times often indicate higher engagement levels. An A/B test could measure whether adding read receipts, a feature that shows if a message has been read, influences this response time. By comparing groups with and without read receipts, you can determine if this feature encourages users to respond more promptly, providing data on its impact on overall engagement within the messaging feature.
+- Ivan Ortiz, To assess user engagement, tracking response time—how quickly users reply to messages—can be insightful, as faster response times often indicate higher engagement levels. An A/B test could measure whether adding read receipts, a feature that shows if a message has been read, influences this response time. By comparing groups with and without read receipts, you can determine if this feature encourages users to respond more promptly, providing data on its impact on overall engagement within the messaging feature.
