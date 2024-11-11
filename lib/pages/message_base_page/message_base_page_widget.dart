@@ -44,8 +44,8 @@ class _MessageBasePageWidgetState extends State<MessageBasePageWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: Container(
-          width: 400.0,
-          height: double.infinity,
+          width: 393.0,
+          height: 852.0,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF8A7EF4), Colors.white],

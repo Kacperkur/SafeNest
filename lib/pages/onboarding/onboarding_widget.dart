@@ -55,6 +55,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: Container(
+          width: 393.0,
+          height: 852.0,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF8A7EF4), Colors.white],
@@ -539,51 +541,47 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
-                child: FFButtonWidget(
-                  onPressed: () async {
-                    logFirebaseEvent('ONBOARDING_PAGE_CompleteProfile_ON_TAP');
-                    logFirebaseEvent('CompleteProfile_backend_call');
+              FFButtonWidget(
+                onPressed: () async {
+                  logFirebaseEvent('ONBOARDING_PAGE_CompleteProfile_ON_TAP');
+                  logFirebaseEvent('CompleteProfile_backend_call');
 
-                    await currentUserReference!.update(createUsersRecordData(
-                      displayName: _model.nameTextController.text,
-                      birthDate: _model.datePicked,
-                      phoneNumber: _model.phoneNumberTextController.text,
-                    ));
-                    logFirebaseEvent('CompleteProfile_navigate_to');
+                  await currentUserReference!.update(createUsersRecordData(
+                    displayName: _model.nameTextController.text,
+                    birthDate: _model.datePicked,
+                    phoneNumber: _model.phoneNumberTextController.text,
+                  ));
+                  logFirebaseEvent('CompleteProfile_navigate_to');
 
-                    context.pushNamed(
-                      'listingBasePage',
-                      extra: <String, dynamic>{
-                        kTransitionInfoKey: const TransitionInfo(
-                          hasTransition: true,
-                          transitionType: PageTransitionType.rightToLeft,
-                        ),
-                      },
-                    );
-                  },
-                  text: 'Complete Profile',
-                  options: FFButtonOptions(
-                    width: 265.0,
-                    height: 40.0,
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                    iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: FlutterFlowTheme.of(context).primary,
-                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                          fontFamily: 'Inter Tight',
-                          color: Colors.white,
-                          letterSpacing: 0.0,
-                        ),
-                    elevation: 0.0,
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(24.0),
+                  context.pushNamed(
+                    'listingBasePage',
+                    extra: <String, dynamic>{
+                      kTransitionInfoKey: const TransitionInfo(
+                        hasTransition: true,
+                        transitionType: PageTransitionType.rightToLeft,
+                      ),
+                    },
+                  );
+                },
+                text: 'Complete Profile',
+                options: FFButtonOptions(
+                  width: 265.0,
+                  height: 40.0,
+                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                  iconPadding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                  color: FlutterFlowTheme.of(context).primary,
+                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                        fontFamily: 'Inter Tight',
+                        color: Colors.white,
+                        letterSpacing: 0.0,
+                      ),
+                  elevation: 0.0,
+                  borderSide: BorderSide(
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    width: 2.0,
                   ),
+                  borderRadius: BorderRadius.circular(24.0),
                 ),
               ),
             ],
