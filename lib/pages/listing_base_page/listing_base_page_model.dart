@@ -9,6 +9,8 @@ class ListingBasePageModel extends FlutterFlowModel<ListingBasePageWidget> {
 
   double? updatePageState;
 
+  bool isSaved = false;
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for Search widget.

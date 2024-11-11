@@ -116,6 +116,23 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'inMessagePage',
           path: '/inMessagePage',
           builder: (context, params) => const InMessagePageWidget(),
+        ),
+        FFRoute(
+          name: 'SavedListingPage',
+          path: '/savedListingPage',
+          builder: (context, params) => const SavedListingPageWidget(),
+        ),
+        FFRoute(
+          name: 'FullViewListing',
+          path: '/fullViewListing',
+          builder: (context, params) => FullViewListingWidget(
+            listingRef: params.getParam(
+              'listingRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['Listings'],
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
