@@ -48,6 +48,50 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961552547639:android:143983dc8d227f87d6a4b2",
+        "android_client_info": {
+          "package_name": "com.uricsc305.safenest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961552547639-64ummlcjpghvplm534sv44t43i76jhvs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uricsc305.safenest",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "961552547639-mcoh3qm91hqnjosvdpsotaf53i9ikcgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCysmAMl4v_jU97F-75z47zDf4QJG5hhRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961552547639-mcoh3qm91hqnjosvdpsotaf53i9ikcgj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "961552547639-g098kl37j0idjsi7apafkbev5lcqcark.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.safenest"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

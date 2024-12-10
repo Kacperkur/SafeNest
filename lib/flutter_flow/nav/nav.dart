@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
+import '/backend/push_notifications/push_notifications_handler.dart'
+    show PushNotificationsHandler;
 import '/index.dart';
 import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -68,18 +70,21 @@ class AppStateNotifier extends ChangeNotifier {
   }
 }
 
-GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
+GoRouter createRouter(AppStateNotifier appStateNotifier, [Widget? entryPage]) =>
+    GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const NavBarPage() : const SigninPageWidget(),
+      errorBuilder: (context, state) => appStateNotifier.loggedIn
+          ? entryPage ?? const NavBarPage()
+          : const SigninPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? const NavBarPage() : const SigninPageWidget(),
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? entryPage ?? const NavBarPage()
+              : const SigninPageWidget(),
         ),
         FFRoute(
           name: 'signinPage',
@@ -115,7 +120,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'inMessagePage',
           path: '/inMessagePage',
-          builder: (context, params) => const InMessagePageWidget(),
+          builder: (context, params) => InMessagePageWidget(
+            chatReference: params.getParam(
+              'chatReference',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['chats'],
+            ),
+          ),
         ),
         FFRoute(
           name: 'SavedListingPage',
@@ -126,13 +138,33 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'FullViewListing',
           path: '/fullViewListing',
           builder: (context, params) => FullViewListingWidget(
-            listingRef: params.getParam(
-              'listingRef',
+            drawerDocRef: params.getParam(
+              'drawerDocRef',
               ParamType.DocumentReference,
               isList: false,
               collectionNamePath: ['Listings'],
             ),
           ),
+        ),
+        FFRoute(
+          name: 'profileEditpage',
+          path: '/profileEditpage',
+          builder: (context, params) => const ProfileEditpageWidget(),
+        ),
+        FFRoute(
+          name: 'invitepage',
+          path: '/invitepage',
+          builder: (context, params) => const InvitepageWidget(),
+        ),
+        FFRoute(
+          name: 'PasswordReset',
+          path: '/passwordReset',
+          builder: (context, params) => const PasswordResetWidget(),
+        ),
+        FFRoute(
+          name: 'onboardingCopy',
+          path: '/onboardingCopy',
+          builder: (context, params) => const OnboardingCopyWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -328,7 +360,7 @@ class FFRoute {
                     ),
                   ),
                 )
-              : page;
+              : PushNotificationsHandler(child: page);
 
           final transitionInfo = state.transitionInfo;
           return transitionInfo.hasTransition

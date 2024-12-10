@@ -81,6 +81,21 @@ class ListingsRecord extends FirestoreRecord {
   List<DocumentReference> get savedBy => _savedBy ?? const [];
   bool hasSavedBy() => _savedBy != null;
 
+  // "landlord_ID" field.
+  DocumentReference? _landlordID;
+  DocumentReference? get landlordID => _landlordID;
+  bool hasLandlordID() => _landlordID != null;
+
+  // "landlord_display_name" field.
+  String? _landlordDisplayName;
+  String get landlordDisplayName => _landlordDisplayName ?? '';
+  bool hasLandlordDisplayName() => _landlordDisplayName != null;
+
+  // "cityReference" field.
+  DocumentReference? _cityReference;
+  DocumentReference? get cityReference => _cityReference;
+  bool hasCityReference() => _cityReference != null;
+
   void _initializeFields() {
     _bathroom = castToType<int>(snapshotData['bathroom']);
     _bedroom = castToType<int>(snapshotData['bedroom']);
@@ -95,6 +110,9 @@ class ListingsRecord extends FirestoreRecord {
     _imgUrl = snapshotData['img_url'] as String?;
     _area = castToType<int>(snapshotData['area']);
     _savedBy = getDataList(snapshotData['saved_by']);
+    _landlordID = snapshotData['landlord_ID'] as DocumentReference?;
+    _landlordDisplayName = snapshotData['landlord_display_name'] as String?;
+    _cityReference = snapshotData['cityReference'] as DocumentReference?;
   }
 
   static CollectionReference get collection =>
@@ -143,6 +161,9 @@ Map<String, dynamic> createListingsRecordData({
   String? zipcode,
   String? imgUrl,
   int? area,
+  DocumentReference? landlordID,
+  String? landlordDisplayName,
+  DocumentReference? cityReference,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -157,6 +178,9 @@ Map<String, dynamic> createListingsRecordData({
       'zipcode': zipcode,
       'img_url': imgUrl,
       'area': area,
+      'landlord_ID': landlordID,
+      'landlord_display_name': landlordDisplayName,
+      'cityReference': cityReference,
     }.withoutNulls,
   );
 
@@ -181,7 +205,10 @@ class ListingsRecordDocumentEquality implements Equality<ListingsRecord> {
         listEquality.equals(e1?.amenities, e2?.amenities) &&
         e1?.imgUrl == e2?.imgUrl &&
         e1?.area == e2?.area &&
-        listEquality.equals(e1?.savedBy, e2?.savedBy);
+        listEquality.equals(e1?.savedBy, e2?.savedBy) &&
+        e1?.landlordID == e2?.landlordID &&
+        e1?.landlordDisplayName == e2?.landlordDisplayName &&
+        e1?.cityReference == e2?.cityReference;
   }
 
   @override
@@ -198,7 +225,10 @@ class ListingsRecordDocumentEquality implements Equality<ListingsRecord> {
         e?.amenities,
         e?.imgUrl,
         e?.area,
-        e?.savedBy
+        e?.savedBy,
+        e?.landlordID,
+        e?.landlordDisplayName,
+        e?.cityReference
       ]);
 
   @override

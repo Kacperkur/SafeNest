@@ -158,7 +158,7 @@ class _SavedListingPageWidgetState extends State<SavedListingPageWidget> {
                                   context.pushNamed(
                                     'FullViewListing',
                                     queryParameters: {
-                                      'listingRef': serializeParam(
+                                      'drawerDocRef': serializeParam(
                                         listViewListingsRecord.reference,
                                         ParamType.DocumentReference,
                                       ),
@@ -179,7 +179,6 @@ class _SavedListingPageWidgetState extends State<SavedListingPageWidget> {
                                   state: listViewListingsRecord.state,
                                   zipcode: listViewListingsRecord.zipcode,
                                   photo: listViewListingsRecord.imgUrl,
-                                  savedBy: listViewListingsRecord.savedBy,
                                 ),
                               );
                             },
