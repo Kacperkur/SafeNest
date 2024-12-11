@@ -13,3 +13,9 @@ export '/pages/saved_listing_page/saved_listing_page_widget.dart'
     show SavedListingPageWidget;
 export '/pages/full_view_listing/full_view_listing_widget.dart'
     show FullViewListingWidget;
+export '/pages/profile_editpage/profile_editpage_widget.dart'
+    show ProfileEditpageWidget;
+export '/invitepage/invitepage_widget.dart' show InvitepageWidget;
+export '/password_reset/password_reset_widget.dart' show PasswordResetWidget;
+export '/pages/onboarding_copy/onboarding_copy_widget.dart'
+    show OnboardingCopyWidget;

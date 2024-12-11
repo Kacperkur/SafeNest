@@ -10,21 +10,21 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 class GeocodeAddressCall {
   static Future<ApiCallResponse> call({
-    String? location = 'Rhode Island',
+    String? locationToAPI = 'Rhode Island',
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'GeocodeAddress',
       apiUrl:
-          'https://maps.googleapis.com/maps/api/geocode/json?address=$location&key=AIzaSyB6oEpYvO300h-X3V1hWLhqeeR7P8cXAwI',
+          'https://maps.googleapis.com/maps/api/geocode/json?address=$locationToAPI&key=AIzaSyB6oEpYvO300h-X3V1hWLhqeeR7P8cXAwI',
       callType: ApiCallType.GET,
       headers: {},
       params: {
-        'location': location,
+        'locationToAPI': locationToAPI,
       },
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
-      cache: false,
+      cache: true,
       isStreamingApi: false,
       alwaysAllowBody: false,
     );

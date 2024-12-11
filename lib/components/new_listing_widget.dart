@@ -17,7 +17,6 @@ class NewListingWidget extends StatefulWidget {
     String? state,
     String? zipcode,
     required this.photo,
-    required this.savedBy,
   })  : bathrooms = bathrooms ?? '0',
         bedrooms = bedrooms ?? '0',
         area = area ?? '0',
@@ -35,7 +34,6 @@ class NewListingWidget extends StatefulWidget {
   final String state;
   final String zipcode;
   final String? photo;
-  final List<DocumentReference>? savedBy;
 
   @override
   State<NewListingWidget> createState() => _NewListingWidgetState();
@@ -75,7 +73,7 @@ class _NewListingWidgetState extends State<NewListingWidget> {
       ),
       child: Container(
         width: MediaQuery.sizeOf(context).width * 2.0,
-        height: 350.0,
+        height: 379.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).secondaryBackground,
           boxShadow: const [
@@ -119,6 +117,17 @@ class _NewListingWidgetState extends State<NewListingWidget> {
                               FlutterFlowTheme.of(context).secondaryBackground,
                           size: 24.0,
                         ),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        valueOrDefault<String>(
+                          widget.photo,
+                          'https://preview.redd.it/eo6v6k01xua51.png?auto=webp&s=ac261c1ecc049b48936a0d5bb56653044c50fac0',
+                        ),
+                        height: 200.0,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ],

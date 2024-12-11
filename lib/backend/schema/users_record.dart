@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 
 import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
 
 import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -50,6 +51,26 @@ class UsersRecord extends FirestoreRecord {
   DateTime? get birthDate => _birthDate;
   bool hasBirthDate() => _birthDate != null;
 
+  // "landlord_value" field.
+  bool? _landlordValue;
+  bool get landlordValue => _landlordValue ?? false;
+  bool hasLandlordValue() => _landlordValue != null;
+
+  // "owned_property" field.
+  DocumentReference? _ownedProperty;
+  DocumentReference? get ownedProperty => _ownedProperty;
+  bool hasOwnedProperty() => _ownedProperty != null;
+
+  // "chat_Ids" field.
+  List<DocumentReference>? _chatIds;
+  List<DocumentReference> get chatIds => _chatIds ?? const [];
+  bool hasChatIds() => _chatIds != null;
+
+  // "showNPS" field.
+  bool? _showNPS;
+  bool get showNPS => _showNPS ?? false;
+  bool hasShowNPS() => _showNPS != null;
+
   void _initializeFields() {
     _email = snapshotData['email'] as String?;
     _displayName = snapshotData['display_name'] as String?;
@@ -58,6 +79,10 @@ class UsersRecord extends FirestoreRecord {
     _createdTime = snapshotData['created_time'] as DateTime?;
     _phoneNumber = snapshotData['phone_number'] as String?;
     _birthDate = snapshotData['birth_date'] as DateTime?;
+    _landlordValue = snapshotData['landlord_value'] as bool?;
+    _ownedProperty = snapshotData['owned_property'] as DocumentReference?;
+    _chatIds = getDataList(snapshotData['chat_Ids']);
+    _showNPS = snapshotData['showNPS'] as bool?;
   }
 
   static CollectionReference get collection =>
@@ -101,6 +126,9 @@ Map<String, dynamic> createUsersRecordData({
   DateTime? createdTime,
   String? phoneNumber,
   DateTime? birthDate,
+  bool? landlordValue,
+  DocumentReference? ownedProperty,
+  bool? showNPS,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -111,6 +139,9 @@ Map<String, dynamic> createUsersRecordData({
       'created_time': createdTime,
       'phone_number': phoneNumber,
       'birth_date': birthDate,
+      'landlord_value': landlordValue,
+      'owned_property': ownedProperty,
+      'showNPS': showNPS,
     }.withoutNulls,
   );
 
@@ -122,13 +153,18 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
 
   @override
   bool equals(UsersRecord? e1, UsersRecord? e2) {
+    const listEquality = ListEquality();
     return e1?.email == e2?.email &&
         e1?.displayName == e2?.displayName &&
         e1?.photoUrl == e2?.photoUrl &&
         e1?.uid == e2?.uid &&
         e1?.createdTime == e2?.createdTime &&
         e1?.phoneNumber == e2?.phoneNumber &&
-        e1?.birthDate == e2?.birthDate;
+        e1?.birthDate == e2?.birthDate &&
+        e1?.landlordValue == e2?.landlordValue &&
+        e1?.ownedProperty == e2?.ownedProperty &&
+        listEquality.equals(e1?.chatIds, e2?.chatIds) &&
+        e1?.showNPS == e2?.showNPS;
   }
 
   @override
@@ -139,7 +175,11 @@ class UsersRecordDocumentEquality implements Equality<UsersRecord> {
         e?.uid,
         e?.createdTime,
         e?.phoneNumber,
-        e?.birthDate
+        e?.birthDate,
+        e?.landlordValue,
+        e?.ownedProperty,
+        e?.chatIds,
+        e?.showNPS
       ]);
 
   @override

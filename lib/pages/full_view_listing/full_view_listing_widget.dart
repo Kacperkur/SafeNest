@@ -1,10 +1,14 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/backend/push_notifications/push_notifications_util.dart';
 import '/components/amenity_box_widget.dart';
 import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'full_view_listing_model.dart';
 export 'full_view_listing_model.dart';
@@ -12,10 +16,10 @@ export 'full_view_listing_model.dart';
 class FullViewListingWidget extends StatefulWidget {
   const FullViewListingWidget({
     super.key,
-    required this.listingRef,
+    required this.drawerDocRef,
   });
 
-  final DocumentReference? listingRef;
+  final DocumentReference? drawerDocRef;
 
   @override
   State<FullViewListingWidget> createState() => _FullViewListingWidgetState();
@@ -45,33 +49,36 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        key: scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        body: StreamBuilder<ListingsRecord>(
-          stream: ListingsRecord.getDocument(widget.listingRef!),
-          builder: (context, snapshot) {
-            // Customize what your widget looks like when it's loading.
-            if (!snapshot.hasData) {
-              return Center(
-                child: SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      FlutterFlowTheme.of(context).primary,
-                    ),
+    return StreamBuilder<ListingsRecord>(
+      stream: ListingsRecord.getDocument(widget.drawerDocRef!),
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Scaffold(
+            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+            body: Center(
+              child: SizedBox(
+                width: 50.0,
+                height: 50.0,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
                   ),
                 ),
-              );
-            }
+              ),
+            ),
+          );
+        }
 
-            final columnListingsRecord = snapshot.data!;
+        final fullViewListingListingsRecord = snapshot.data!;
 
-            return SingleChildScrollView(
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            key: scaffoldKey,
+            resizeToAvoidBottomInset: false,
+            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+            body: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -97,7 +104,7 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                               fit: BoxFit.cover,
                               image: Image.network(
                                 valueOrDefault<String>(
-                                  columnListingsRecord.imgUrl,
+                                  fullViewListingListingsRecord.imgUrl,
                                   'https://preview.redd.it/eo6v6k01xua51.png?auto=webp&s=ac261c1ecc049b48936a0d5bb56653044c50fac0',
                                 ),
                               ).image,
@@ -116,40 +123,126 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              FlutterFlowIconButton(
-                                borderRadius: 20.0,
-                                buttonSize: 40.0,
-                                fillColor: const Color(0x33FFFFFF),
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.white,
-                                  size: 24.0,
+                              Align(
+                                alignment: const AlignmentDirectional(-1.0, -1.0),
+                                child: FlutterFlowIconButton(
+                                  borderRadius: 20.0,
+                                  buttonSize: 40.0,
+                                  fillColor: const Color(0x33FFFFFF),
+                                  icon: const Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                    size: 24.0,
+                                  ),
+                                  onPressed: () async {
+                                    logFirebaseEvent(
+                                        'FULL_VIEW_LISTING_arrow_back_ICN_ON_TAP');
+                                    logFirebaseEvent(
+                                        'IconButton_navigate_back');
+                                    context.safePop();
+                                  },
                                 ),
-                                onPressed: () async {
-                                  logFirebaseEvent(
-                                      'FULL_VIEW_LISTING_arrow_back_ICN_ON_TAP');
-                                  logFirebaseEvent('IconButton_navigate_to');
-
-                                  context.pushNamed('listingBasePage');
-                                },
                               ),
-                              FlutterFlowIconButton(
-                                borderRadius: 20.0,
-                                buttonSize: 40.0,
-                                fillColor: const Color(0x33FFFFFF),
-                                icon: const Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.white,
-                                  size: 24.0,
+                              Align(
+                                alignment: const AlignmentDirectional(1.0, -1.0),
+                                child: ToggleIcon(
+                                  onPressed: () async {
+                                    final savedByElement = currentUserReference;
+                                    final savedByUpdate =
+                                        fullViewListingListingsRecord.savedBy
+                                                .contains(savedByElement)
+                                            ? FieldValue.arrayRemove(
+                                                [savedByElement])
+                                            : FieldValue.arrayUnion(
+                                                [savedByElement]);
+                                    await fullViewListingListingsRecord
+                                        .reference
+                                        .update({
+                                      ...mapToFirestore(
+                                        {
+                                          'saved_by': savedByUpdate,
+                                        },
+                                      ),
+                                    });
+                                    logFirebaseEvent(
+                                        'FULL_VIEW_LISTING_ToggleIcon_lsdsaiat_ON');
+                                    if (fullViewListingListingsRecord.savedBy
+                                            .contains(currentUserReference) ==
+                                        true) {
+                                      logFirebaseEvent(
+                                          'ToggleIcon_backend_call');
+
+                                      await fullViewListingListingsRecord
+                                          .reference
+                                          .update({
+                                        ...mapToFirestore(
+                                          {
+                                            'saved_by': FieldValue.arrayRemove(
+                                                [currentUserReference]),
+                                          },
+                                        ),
+                                      });
+                                      logFirebaseEvent(
+                                          'ToggleIcon_update_page_state');
+                                      _model.isSaved1 = false;
+                                      safeSetState(() {});
+                                    } else {
+                                      logFirebaseEvent(
+                                          'ToggleIcon_backend_call');
+
+                                      await fullViewListingListingsRecord
+                                          .reference
+                                          .update({
+                                        ...mapToFirestore(
+                                          {
+                                            'saved_by': FieldValue.arrayUnion(
+                                                [currentUserReference]),
+                                          },
+                                        ),
+                                      });
+                                      logFirebaseEvent(
+                                          'ToggleIcon_update_page_state');
+                                      _model.isSaved1 = true;
+                                      safeSetState(() {});
+                                    }
+
+                                    logFirebaseEvent(
+                                        'ToggleIcon_update_page_state');
+                                    _model.isSaved1 = !_model.isSaved1;
+                                    safeSetState(() {});
+                                    logFirebaseEvent(
+                                        'ToggleIcon_trigger_push_notification');
+                                    triggerPushNotification(
+                                      notificationTitle: 'Chick Magnet!',
+                                      notificationText:
+                                          'You got a save! People are loving your listing',
+                                      notificationSound: 'default',
+                                      userRefs: [
+                                        fullViewListingListingsRecord
+                                            .landlordID!
+                                      ],
+                                      initialPageName: 'FullViewListing',
+                                      parameterData: {
+                                        'drawerDocRef': widget.drawerDocRef,
+                                      },
+                                    );
+                                  },
+                                  value: fullViewListingListingsRecord.savedBy
+                                      .contains(currentUserReference),
+                                  onIcon: Icon(
+                                    Icons.favorite,
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    size: 24.0,
+                                  ),
+                                  offIcon: Icon(
+                                    Icons.favorite_border,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    size: 24.0,
+                                  ),
                                 ),
-                                onPressed: () async {
-                                  logFirebaseEvent(
-                                      'FULL_VIEW_LISTING_favorite_border_ICN_ON');
-                                  logFirebaseEvent(
-                                      'IconButton_google_analytics_event');
-                                  logFirebaseEvent('save_click');
-                                },
                               ),
                             ],
                           ),
@@ -158,7 +251,7 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                     ),
                   ),
                   StreamBuilder<ListingsRecord>(
-                    stream: ListingsRecord.getDocument(widget.listingRef!),
+                    stream: ListingsRecord.getDocument(widget.drawerDocRef!),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
                       if (!snapshot.hasData) {
@@ -327,10 +420,84 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                                               logFirebaseEvent(
                                                   'FULL_VIEW_LISTING_REQUEST_TO_APPLY_BTN_O');
                                               logFirebaseEvent(
+                                                  'Button_backend_call');
+
+                                              var chatsRecordReference =
+                                                  ChatsRecord.collection.doc();
+                                              await chatsRecordReference.set({
+                                                ...createChatsRecordData(
+                                                  lastMessage:
+                                                      'Kick off the conversation!',
+                                                  timeStamp:
+                                                      getCurrentTimestamp,
+                                                  listingPic:
+                                                      fullViewListingListingsRecord
+                                                          .imgUrl,
+                                                  listingAddress:
+                                                      '${containerListingsRecord.street}, ${containerListingsRecord.city}, ${containerListingsRecord.state}, ${containerListingsRecord.zipcode}',
+                                                ),
+                                                ...mapToFirestore(
+                                                  {
+                                                    'userIds': functions
+                                                        .generateUserList(
+                                                            currentUserReference!,
+                                                            fullViewListingListingsRecord
+                                                                .landlordID!),
+                                                    'displayNames': functions
+                                                        .generateUsersNames(
+                                                            currentUserDisplayName,
+                                                            fullViewListingListingsRecord
+                                                                .landlordDisplayName),
+                                                  },
+                                                ),
+                                              });
+                                              _model.newChatId = ChatsRecord
+                                                  .getDocumentFromData({
+                                                ...createChatsRecordData(
+                                                  lastMessage:
+                                                      'Kick off the conversation!',
+                                                  timeStamp:
+                                                      getCurrentTimestamp,
+                                                  listingPic:
+                                                      fullViewListingListingsRecord
+                                                          .imgUrl,
+                                                  listingAddress:
+                                                      '${containerListingsRecord.street}, ${containerListingsRecord.city}, ${containerListingsRecord.state}, ${containerListingsRecord.zipcode}',
+                                                ),
+                                                ...mapToFirestore(
+                                                  {
+                                                    'userIds': functions
+                                                        .generateUserList(
+                                                            currentUserReference!,
+                                                            fullViewListingListingsRecord
+                                                                .landlordID!),
+                                                    'displayNames': functions
+                                                        .generateUsersNames(
+                                                            currentUserDisplayName,
+                                                            fullViewListingListingsRecord
+                                                                .landlordDisplayName),
+                                                  },
+                                                ),
+                                              }, chatsRecordReference);
+                                              logFirebaseEvent(
+                                                  'Button_update_page_state');
+
+                                              safeSetState(() {});
+                                              logFirebaseEvent(
                                                   'Button_navigate_to');
 
-                                              context
-                                                  .pushNamed('inMessagePage');
+                                              context.pushNamed(
+                                                'inMessagePage',
+                                                queryParameters: {
+                                                  'chatReference':
+                                                      serializeParam(
+                                                    _model.newChatId?.reference,
+                                                    ParamType.DocumentReference,
+                                                  ),
+                                                }.withoutNulls,
+                                              );
+
+                                              safeSetState(() {});
                                             },
                                             text: 'Request to Apply',
                                             options: FFButtonOptions(
@@ -363,16 +530,111 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                                   ),
                                 ],
                               ),
-                              Text(
-                                'Experience urban living at its finest in this stunning downtown loft. Featuring high ceilings, modern amenities, and breathtaking city views, this space is perfect for those seeking a luxurious and convenient lifestyle.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Inter',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
-                                      letterSpacing: 0.0,
-                                    ),
+                              StreamBuilder<CrimeStatisticsRecord>(
+                                stream: CrimeStatisticsRecord.getDocument(
+                                    containerListingsRecord.cityReference!),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+
+                                  final crimerowCrimeStatisticsRecord =
+                                      snapshot.data!;
+
+                                  return Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Population',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodySmall
+                                                .override(
+                                                  fontFamily: 'Inter',
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
+                                          Icon(
+                                            Icons.people_alt_outlined,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            size: 24.0,
+                                          ),
+                                          Text(
+                                            valueOrDefault<String>(
+                                              formatNumber(
+                                                crimerowCrimeStatisticsRecord
+                                                    .population,
+                                                formatType: FormatType.compact,
+                                              ),
+                                              '21000',
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodySmall
+                                                .override(
+                                                  fontFamily: 'Inter',
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
+                                        ].divide(const SizedBox(height: 4.0)),
+                                      ),
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Crime Rate',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodySmall
+                                                .override(
+                                                  fontFamily: 'Inter',
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
+                                          Icon(
+                                            Icons.crisis_alert_outlined,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            size: 24.0,
+                                          ),
+                                          Text(
+                                            valueOrDefault<String>(
+                                              crimerowCrimeStatisticsRecord
+                                                  .crimeRate,
+                                              '69%',
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodySmall
+                                                .override(
+                                                  fontFamily: 'Inter',
+                                                  letterSpacing: 0.0,
+                                                ),
+                                          ),
+                                        ].divide(const SizedBox(height: 4.0)),
+                                      ),
+                                    ],
+                                  );
+                                },
                               ),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
@@ -486,25 +748,38 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                                             VerticalDirection.down,
                                         clipBehavior: Clip.none,
                                         children: [
-                                          GridView(
-                                            padding: EdgeInsets.zero,
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: 10.0,
-                                              mainAxisSpacing: 10.0,
-                                              childAspectRatio: 1.0,
-                                            ),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            children: [
-                                              wrapWithModel(
-                                                model: _model.amenityBoxModel,
-                                                updateCallback: () =>
-                                                    safeSetState(() {}),
-                                                child: const AmenityBoxWidget(),
-                                              ),
-                                            ],
+                                          Builder(
+                                            builder: (context) {
+                                              final amenitiesVar =
+                                                  containerListingsRecord
+                                                      .amenities
+                                                      .toList();
+
+                                              return GridView.builder(
+                                                padding: EdgeInsets.zero,
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 3,
+                                                  crossAxisSpacing: 10.0,
+                                                  mainAxisSpacing: 10.0,
+                                                  childAspectRatio: 1.0,
+                                                ),
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: amenitiesVar.length,
+                                                itemBuilder: (context,
+                                                    amenitiesVarIndex) {
+                                                  final amenitiesVarItem =
+                                                      amenitiesVar[
+                                                          amenitiesVarIndex];
+                                                  return AmenityBoxWidget(
+                                                    key: Key(
+                                                        'Key4p7_${amenitiesVarIndex}_of_${amenitiesVar.length}'),
+                                                    amenity: amenitiesVarItem,
+                                                  );
+                                                },
+                                              );
+                                            },
                                           ),
                                         ],
                                       ),
@@ -545,11 +820,11 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                                               _model.googleMapsCenter ??=
                                                   const LatLng(13.106061, -59.613158),
                                           markerColor: GoogleMarkerColor.violet,
-                                          mapType: MapType.normal,
+                                          mapType: MapType.satellite,
                                           style: GoogleMapStyle.standard,
                                           initialZoom: 14.0,
-                                          allowInteraction: true,
-                                          allowZoom: true,
+                                          allowInteraction: false,
+                                          allowZoom: false,
                                           showZoomControls: true,
                                           showLocation: true,
                                           showCompass: false,
@@ -603,10 +878,10 @@ class _FullViewListingWidgetState extends State<FullViewListingWidget> {
                   ),
                 ],
               ),
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

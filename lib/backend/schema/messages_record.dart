@@ -15,41 +15,42 @@ class MessagesRecord extends FirestoreRecord {
     _initializeFields();
   }
 
+  // "message" field.
+  String? _message;
+  String get message => _message ?? '';
+  bool hasMessage() => _message != null;
+
+  // "timeStamp" field.
+  DateTime? _timeStamp;
+  DateTime? get timeStamp => _timeStamp;
+  bool hasTimeStamp() => _timeStamp != null;
+
   // "senderId" field.
-  String? _senderId;
-  String get senderId => _senderId ?? '';
+  DocumentReference? _senderId;
+  DocumentReference? get senderId => _senderId;
   bool hasSenderId() => _senderId != null;
 
-  // "receiverId" field.
-  String? _receiverId;
-  String get receiverId => _receiverId ?? '';
-  bool hasReceiverId() => _receiverId != null;
+  // "senderName" field.
+  String? _senderName;
+  String get senderName => _senderName ?? '';
+  bool hasSenderName() => _senderName != null;
 
-  // "messageText" field.
-  String? _messageText;
-  String get messageText => _messageText ?? '';
-  bool hasMessageText() => _messageText != null;
-
-  // "timestamp" field.
-  DateTime? _timestamp;
-  DateTime? get timestamp => _timestamp;
-  bool hasTimestamp() => _timestamp != null;
-
-  // "lastMessage" field.
-  String? _lastMessage;
-  String get lastMessage => _lastMessage ?? '';
-  bool hasLastMessage() => _lastMessage != null;
+  DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
-    _senderId = snapshotData['senderId'] as String?;
-    _receiverId = snapshotData['receiverId'] as String?;
-    _messageText = snapshotData['messageText'] as String?;
-    _timestamp = snapshotData['timestamp'] as DateTime?;
-    _lastMessage = snapshotData['lastMessage'] as String?;
+    _message = snapshotData['message'] as String?;
+    _timeStamp = snapshotData['timeStamp'] as DateTime?;
+    _senderId = snapshotData['senderId'] as DocumentReference?;
+    _senderName = snapshotData['senderName'] as String?;
   }
 
-  static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('messages');
+  static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
+      parent != null
+          ? parent.collection('messages')
+          : FirebaseFirestore.instance.collectionGroup('messages');
+
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('messages').doc(id);
 
   static Stream<MessagesRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => MessagesRecord.fromSnapshot(s));
@@ -83,19 +84,17 @@ class MessagesRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createMessagesRecordData({
-  String? senderId,
-  String? receiverId,
-  String? messageText,
-  DateTime? timestamp,
-  String? lastMessage,
+  String? message,
+  DateTime? timeStamp,
+  DocumentReference? senderId,
+  String? senderName,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
+      'message': message,
+      'timeStamp': timeStamp,
       'senderId': senderId,
-      'receiverId': receiverId,
-      'messageText': messageText,
-      'timestamp': timestamp,
-      'lastMessage': lastMessage,
+      'senderName': senderName,
     }.withoutNulls,
   );
 
@@ -107,21 +106,15 @@ class MessagesRecordDocumentEquality implements Equality<MessagesRecord> {
 
   @override
   bool equals(MessagesRecord? e1, MessagesRecord? e2) {
-    return e1?.senderId == e2?.senderId &&
-        e1?.receiverId == e2?.receiverId &&
-        e1?.messageText == e2?.messageText &&
-        e1?.timestamp == e2?.timestamp &&
-        e1?.lastMessage == e2?.lastMessage;
+    return e1?.message == e2?.message &&
+        e1?.timeStamp == e2?.timeStamp &&
+        e1?.senderId == e2?.senderId &&
+        e1?.senderName == e2?.senderName;
   }
 
   @override
-  int hash(MessagesRecord? e) => const ListEquality().hash([
-        e?.senderId,
-        e?.receiverId,
-        e?.messageText,
-        e?.timestamp,
-        e?.lastMessage
-      ]);
+  int hash(MessagesRecord? e) => const ListEquality()
+      .hash([e?.message, e?.timeStamp, e?.senderId, e?.senderName]);
 
   @override
   bool isValidKey(Object? o) => o is MessagesRecord;
