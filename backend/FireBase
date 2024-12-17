@@ -4,7 +4,7 @@ This document outlines the schema for the collections used in the SafeNest proje
 
 ## Collections  
 
-### `CrimStatisticsFinal`  
+### CrimStatisticsFinal 
 | Field       | Type   | Description                              |  
 |-------------|--------|------------------------------------------|  
 | `city`      | String | Name of the city (e.g., "East Greenwich").|  
@@ -13,7 +13,7 @@ This document outlines the schema for the collections used in the SafeNest proje
 | `population`| Number | Population of the city.                  |  
 | `violent`   | Number | Count of violent crimes.                 |  
 
-### `Listings`  
+### Listings  
 | Field                | Type      | Description                                                 |  
 |----------------------|-----------|-------------------------------------------------------------|  
 | `amenities`          | String    | Comma-separated list of amenities (e.g., "Storage Space").  |  
@@ -36,7 +36,7 @@ This document outlines the schema for the collections used in the SafeNest proje
 | `street`             | String    | Street address.                                            |  
 | `zipcode`            | String    | ZIP code.                                                  |  
 
-### `users`  
+### users  
 | Field          | Type      | Description                                                |  
 |----------------|-----------|------------------------------------------------------------|  
 | `birth_date`   | Timestamp | User's date of birth.                                       |  
@@ -49,7 +49,7 @@ This document outlines the schema for the collections used in the SafeNest proje
 | `photo_url`    | String    | URL of the user's profile photo.                           |  
 | `uid`          | String    | Unique identifier for the user.                            |  
 
-### `Chats`  
+### Chats  
 | Field              | Type      | Description                                              |  
 |--------------------|-----------|----------------------------------------------------------|  
 | `displayNames`     | Array     | Array of display names involved in the chat.             |  
